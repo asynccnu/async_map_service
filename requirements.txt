@@ -4,7 +4,6 @@ async-timeout==2.0.0
 lxml==4.1.1
 gunicorn==19.6.0
 motor==1.1
-pycparser==2.10
-cryptography==1.7.2
+cryptography
 pymongo==3.4.0
 yarl==0.18.0
