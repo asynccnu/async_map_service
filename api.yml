@@ -1,0 +1,229 @@
+swagger: "2.0"
+info:
+  description: "华师地图信息"
+  version: "1.0.0"
+  title: "CCNU map"
+host:  map.muxixyz.com
+basePath: /api/
+tags:
+- name: "map"
+  description: "Everything about your maps"
+schemes:
+- "https"
+- "http"
+paths:
+  /plat/:
+    post:
+      tags:
+      - "map"
+      summary: "添加地点信息"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "地点信息"
+        required: true
+        schema:
+          $ref: "#/definitions/Preplat"
+      responses:
+        400:
+          description: "msg : 信息错误"
+        403:
+          description: "msg : 信息已存在"
+        200:
+          description: "msg : 添加成功"
+    put:
+      tags:
+      - "map"
+      summary: "更新地点信息"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "地点信息"
+        required: true
+        schema:
+          $ref: "#/definitions/Plat"
+      responses:
+        400:
+          description: "msg : 信息错误"
+        404:
+          description: "msg : 信息不存在"
+        200:
+          description: "msg : 修改成功"
+
+    delete:
+      tags:
+      - "map"
+      summary: "删除地点信息"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "地点名称"
+        required: true
+        schema:
+          $ref: "#/definitions/Platname"
+      responses:
+        400:
+          description: "msg : 信息错误"
+        404:
+          description: "msg : 信息不存在"
+        200:
+          description: "msg : 修改成功"
+
+  /plat/names/:
+    get:
+      tags:
+      - "map"
+      summary: "获取所有地点名称"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "msg : 添加成功"
+          schema:
+            $ref: "#/definitions/Platnames"
+
+  /plat/detail/:
+    get:
+      tags:
+      - "map"
+      summary: "获取某个地点的详细信息"
+      parameters:
+        - name: "name"
+          in: "query"
+          required: true
+          type: "string"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "msg : 查找成功"
+          schema:
+            $ref: "#/definitions/Plat"
+        400:
+          description: "msg : 信息错误"
+        404:
+          description: "msg : 信息不存在"
+
+  /plat/match/:
+    get:
+      tags:
+      - "map"
+      summary: "匹配name获得地点信息"
+      parameters:
+        - name: "name"
+          in: "query"
+          required: true
+          type: "string"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "msg : 查找成功"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Plat_"
+
+definitions:
+  Plat:
+    type: "object"
+    required:
+    - "name"
+    - "url"
+    properties:
+      name:
+        type: "string"
+        example: "yy楼"
+      url:
+        type: "array"
+        xml:
+          name: "url"
+          wrapped: true
+        items:
+          type: "string"
+      points:
+        type: "array"
+        xml:
+          name: "points"
+          wrapped: true
+        items:
+          type: "integer"
+      info:
+        type: "string"
+    xml:
+      name: "Plat"
+
+  Preplat:
+    type: "object"
+    required:
+    - "name"
+    - "url"
+    properties:
+      name:
+        type: "string"
+        example: "yy楼"
+      url:
+        type: "array"
+        xml:
+          name: "url"
+          wrapped: true
+        items:
+          type: "string"
+    xml:
+      name: "Preplat"
+
+  Platname:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      name:
+        type: "string"
+
+  Platnames:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      name:
+        type: "array"
+        xml:
+          name: "name"
+          wrapped: true
+        items:
+          type: "string"
+
+  Plat_:
+    type: "object"
+    required:
+    - "name"
+    - "points"
+    properties:
+      name:
+        type: "string"
+      points:
+        type: "array"
+        xml:
+          name: "points"
+          wrapped: true
+        items:
+          type: "integer"
+

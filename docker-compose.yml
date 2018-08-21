@@ -1,0 +1,8 @@
+#-------------------------------async-map-service----------------------
+map-api:
+    build: .
+    env_file:
+        - map.env
+    command: gunicorn wsgi:app -k aiohttp.worker.GunicornWebWorker -b 0.0.0.0:1299
+    ports:
+        - "1299:1299"
