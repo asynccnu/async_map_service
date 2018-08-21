@@ -3,7 +3,7 @@ info:
   description: "华师地图信息"
   version: "1.0.0"
   title: "CCNU map"
-host:  map.muxixyz.com
+host:  ccnubox.muxixyz.com
 basePath: /api/
 tags:
 - name: "map"
