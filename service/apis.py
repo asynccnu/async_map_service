@@ -27,6 +27,8 @@ async def init_plat(request):
         return Response(body='{"msg" : "信息已存在"}',
                         content_type='application/json', status=403)
     # 插入信息
+    data['points'] = [0.0]*2
+    data['info'] = "等待添加"
     result = await plat.insert_one(data)
     return Response(body='{"msg" : "添加成功"}',
                     content_type='application/json', status=200)
