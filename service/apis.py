@@ -127,15 +127,25 @@ async def match_plat(request):
     :param request:
     :return:
     """
-    points = []
     res = plat.find()
     args = request.rel_url.query_string
     name = args.split('=')[1]
 
-    async for each in res:
-        if name in each.get('name'):
-            points.append({'name':each['name'],'points':each['points']})
+    def match(s,t):
+        count = 0
+        for each in s:
+            if each in t:
+                count += 1
+        return count
 
+    td = {}
+    async for each in res:
+        count = match(name,each.get('name'))
+        if count != 0:
+            td[str({'name':each['name'],'points':each['points']})] = count
+
+    sorted_td = sorted(td.items(),key=lambda d:d[1], reverse=True)
+    points = [ eval(p[0]) for p in sorted_td ]
     result = {'points': points}
     return json_response(result)
 
