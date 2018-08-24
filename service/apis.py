@@ -137,7 +137,28 @@ async def match_plat(request):
             points.append({'name':each['name'],'points':each['points']})
 
     result = {'points': points}
-    return json_response(points)
+    return json_response(result)
+
+
+async def match_point(request):
+    """
+    根据经纬度返回名称
+    :param request:
+    :return:
+    """
+    args = (request.rel_url.query_string).split('&')
+    p0 = float(args[0].split('=')[1])
+    p1 = float(args[1].split('=')[1])
+    res = plat.find()
+
+    async for each in res:
+        if each.get('points'):
+            p = each['points']
+            if p[0] == p0 and p[1] == p1:
+                return json_response({'name' : each.get('name')})
+
+    return Response(body='{"msg" : "不存在"}',
+                        content_type='application/json', status=404)
 
 
 api.router.add_route('POST','/plat/',init_plat,name='init_plat')
@@ -146,5 +167,7 @@ api.router.add_route('GET','/plat/names/',all_plat_names,name='all_plat_names')
 api.router.add_route('DELETE','/plat/',delete_plat,name='delete_plat')
 api.router.add_route('GET','/plat/detail/',detail_plat,name='detail_plat')
 api.router.add_route('GET','/plat/match/',match_plat,name='match_plat')
+api.router.add_route('GET','/plat/point/',match_point,name='match_point')
+
 
 
