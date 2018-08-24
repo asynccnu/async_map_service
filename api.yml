@@ -3,7 +3,7 @@ info:
   description: "华师地图信息"
   version: "1.0.0"
   title: "CCNU map"
-host:  ccnubox.muxixyz.com
+host:  map.muxixyz.com
 basePath: /api/
 tags:
 - name: "map"
@@ -136,11 +136,36 @@ paths:
       - "application/json"
       responses:
         200:
-          description: "msg : 查找成功"
+          description: "查找成功"
           schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Plat_"
+            $ref: "#/definitions/Plats"
+
+  /plat/point/:
+    get:
+      tags:
+      - "map"
+      summary: "根据经纬度查找地点信息"
+      parameters:
+        - name: "p0"
+          in: "query"
+          required: true
+          type: "string"
+        - name: "p1"
+          in: "query"
+          required: true
+          type: "string"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "查找成功"
+          schema:
+            $ref: "#/definitions/Platname"
+        404:
+          description: "msg : 不存在"
+
 
 definitions:
   Plat:
@@ -227,3 +252,15 @@ definitions:
         items:
           type: "integer"
 
+  Plats:
+    type: "object"
+    required :
+    - "point"
+    properties:
+      point:
+        type: "array"
+        xml:
+          name: "point"
+          wrapped: true
+        items:
+          $ref: "#/definitions/Plat_"
